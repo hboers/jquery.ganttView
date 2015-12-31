@@ -61,8 +61,6 @@ behavior: {
 
 		if (opts.data) {
 			build();
-		} else if (opts.dataUrl) {
-			jQuery.getJSON(opts.dataUrl, function (data) { opts.data = data; build(); });
 		}
 
 		function build() {
@@ -89,6 +87,18 @@ behavior: {
 				$("div.ganttview-slide-container", this).width(value);
 			});
 		}
+    if (method == "addBlock") {
+			var div = $("div.ganttview", this);
+			div.each(function () {
+        // TODO addBlock
+			});
+		}
+    if (method == "removeBlock") {
+      var div = $("div.ganttview", this);
+      div.each(function () {
+        // TODO removeBlock
+      });
+    }
 	}
 
 	var Chart = function(div, opts) {
