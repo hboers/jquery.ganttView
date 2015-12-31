@@ -128,6 +128,9 @@ behavior: {
             "class": "ganttview-vtheader-item-name",
             "css": { "height":  (cellHeight-1) + "px" }
         }).append(rows[i].name));
+        if (rows[i].title) {
+          itemDiv.attr("title",rows[i].title);
+        }
         headerDiv.append(itemDiv);
       }
       div.append(headerDiv);
@@ -147,11 +150,13 @@ behavior: {
         "class": "ganttview-hzheader-columns"
       });
       for (var c in columns) {
-        //alert (c.name);
         var columnDiv = jQuery("<div>", {
           "class": "ganttview-hzheader-column",
           "css": { "width": (cellWidth - 1) +"px"}
         }).append(columns[c].name);
+        if (columns[c].title) {
+          columnsDiv.attr("title",columns[c].title);
+        }
         columnsDiv.append(columnDiv);
       }
       headerDiv.append(columnsDiv);
