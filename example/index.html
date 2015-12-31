@@ -22,32 +22,78 @@
 	<div id="eventMessage"></div>
 
 	<script type="text/javascript" src="../lib/jquery-1.4.2.js"></script>
-	<script type="text/javascript" src="../lib/date.js"></script>
 	<script type="text/javascript" src="../lib/jquery-ui-1.8.4.js"></script>
 	<script type="text/javascript" src="../jquery.ganttView.js"></script>
 	<script type="text/javascript" src="data.js"></script>
 	<script type="text/javascript">
 		$(function () {
-			$("#ganttChart").ganttView({ 
+			$("#ganttChart").ganttView({
 				data: ganttData,
-				slideWidth: 900,
-				behavior: {
-					onClick: function (data) { 
-						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+        slideWidth: 1200,
+        cellWidth: 100,
+        cellHeight: 30,
+        headerHeight: 50,
+        columns: [
+          {id: 1, name: "1"},
+          {id: 2, name: "2"},
+          {id: 3, name: "3"},
+          {id: 4, name: "4"},
+          {id: 5, name: "5"},
+          {id: 6, name: "6"},
+          {id: 7, name: "7"},
+          {id: 8, name: "8"},
+          {id: 9, name: "9"},
+          {id: 10, name: "10"},
+          {id: 11, name: "11"},
+          {id: 12, name: "12"},
+          {id: 13, name: "13"},
+          {id: 14, name: "14"},
+          {id: 15, name: "15"},
+          {id: 16, name: "16"},
+          {id: 17, name: "17"},
+          {id: 18, name: "18"},
+          {id: 19, name: "19"},
+          {id: 20, name: "20"},
+        ],
+        rows: [
+          { id: 1, name: "Resource" },
+          { id: 2, name: "Resource" },
+          { id: 3, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+          { id: 4, name: "Resource" },
+        ],
+      	behavior: {
+					onClick: function (data) {
+						var msg = "You clicked on a block";
 						$("#eventMessage").text(msg);
 					},
-					onResize: function (data) { 
-						var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+					onResize: function (data) {
+						var msg = "You resized a block" ;
 						$("#eventMessage").text(msg);
 					},
-					onDrag: function (data) { 
-						var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+					onDrag: function (data) {
+						var msg = "You dragged a block";
 						$("#eventMessage").text(msg);
 					}
 				}
 			});
-			
-			// $("#ganttChart").ganttView("setSlideWidth", 600);
+
+			 $("#ganttChart").ganttView("setSlideWidth", 600);
+       $("#ganttChart").ganttView("clearBlocks");
+
 		});
 	</script>
 

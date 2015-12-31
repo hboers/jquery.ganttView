@@ -1,57 +1,27 @@
 jQuery.ganttView
 ================
 
-The jQuery.ganttView plugin is a very lightweight plugin for creating a Gantt chart in plain HTML...no vector graphics or images required.  The plugin supports dragging and resizing the Gantt blocks and callbacks to trap the updated data.
+The jQuery.ganttView plugin is a plugin to create Gantt-like chart or
+Leitstand with HTML. The plugin supports dragging and resizing the blocks
+and callbacks to trap the updated data.
 
-[![Sample Gantt](https://raw.githubusercontent.com/thegrubbsian/jquery.ganttView/master/example/jquery-ganttview.png) A sample chart](http://thegrubbsian.github.io/jquery.ganttView/example/index.html)
+This version is based on https://github.com/thegrubbsian/jquery.ganttView.
+I needed a more generic approach and had to remove or change lots of code so
+contribution to the original project was not possible.
 
+See Example for usage hints. Additional Documentation will hopefully follow
+for the first stable version.
 
-Browser Compatibility
----------------------
-Currently the plugin has been tested, and is working in: FF 3.5+, Chrome 5+, Safari 4+, IE8+.  There are minor issues in IE7 and I haven't even attempted to use it in IE6.  If you encounter any issues with any version of Internet Explorer and would like to contribute CSS fixes please do so, several people have asked for IE6 support.
-
-
-Dependencies
-------------
-The plugin depends on the following libraries:
-
-- jQuery 1.4 or higher (obviously)
-- jQuery-UI 1.8 or higher
-- date.js
-
-
-Documentation
--------------
-Forthcoming...
-
-
-Contribution Guidelines
-------------
-The internal roadmap for the plugin is detailed in the project wiki. If you're interested in features outside of what's described there, we'd be interested to discuss pull requests that would add these features.  If you like the plugin, feel free to fork it and submit your patches back.
-
-**Guidelines:** If you'd like to offer a new feature please help us out by submitting the pull request with only the fewest changes necessary. 
-
-Ideal: Fork the project, apply just the individual changes to the individual files effected, submit pull request. 
-
-Those pull requests can usually be automatically merged and closed through the site here. 
-
-If your pull request includes things like:
-
-- changes to dependencies or where they're hosted
-- stylistic modifications
-- moving project files to different directories
-- more than one new feature / functional change
-
-one of us will have to do the work of carving out just the feature being pulled. Your request is likely to sit unmerged for a while if that's the case. 
-
+Please note that this is work in process so interface and name may change!
 
 License
 -------
-The jQuery.ganttView plugin may be used free of charge under the conditions 
+The jQuery.ganttView plugin may be used free of charge under the conditions
 of the following license:
 
 The MIT License
 
+Copyright (c) 2015 H. Boers - hboers@me.com
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

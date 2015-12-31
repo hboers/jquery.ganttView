@@ -4,24 +4,20 @@ Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
 
-div.ganttview-hzheader-month,
 div.ganttview-hzheader-day,
 div.ganttview-vtheader,
 div.ganttview-vtheader-item-name,
-div.ganttview-vtheader-series,
 div.ganttview-grid,
 div.ganttview-grid-row-cell {
 	float: left;
 }
 
-div.ganttview-hzheader-month,
 div.ganttview-hzheader-day {
 	text-align: center;
 }
 
-div.ganttview-grid-row-cell.last,
-div.ganttview-hzheader-day.last,
-div.ganttview-hzheader-month.last {
+div.ganttview-grid-row-cell:last-child,
+div.ganttview-hzheader-day:last-child {
 	border-right: none;
 }
 
@@ -32,15 +28,8 @@ div.ganttview {
 
 /* Horizontal Header */
 
-div.ganttview-hzheader-month {
-	width: 60px;
-	height: 20px;
-	border-right: 1px solid #d0d0d0;
-	line-height: 20px;
-}
-
 div.ganttview-hzheader-day {
-	width: 20px;
+	width: 80px;
 	height: 20px;
 	border-right: 1px solid #f0f0f0;
 	border-top: 1px solid #d0d0d0;
@@ -52,8 +41,8 @@ div.ganttview-hzheader-day {
 /* Vertical Header */
 
 div.ganttview-vtheader {
-	margin-top: 41px;
-	width: 240px;
+	margin-top: 21px;
+	width: 140px;
 	overflow: hidden;
 	background-color: #fff;
 }
@@ -64,18 +53,10 @@ div.ganttview-vtheader-item {
 }
 
 div.ganttview-vtheader-item-name {
-	width: 100px;
+	width: 140px;
 	padding-left: 5px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 16px;
-}
-
-div.ganttview-vtheader-series-name {
-	width: 130px;
-	height: 31px;
-	border-top: 1px solid #d0d0d0;
-	line-height: 16px;
-	padding-left: 5px;
 }
 
 
@@ -90,7 +71,6 @@ div.ganttview-slide-container {
 /* Grid */
 
 div.ganttview-grid-row-cell {
-	width: 20px;
 	height: 31px;
 	border-right: 1px solid #f0f0f0;
 	border-top: 1px solid #f0f0f0;
@@ -104,17 +84,12 @@ div.ganttview-grid-row-cell.ganttview-weekend {
 /* Blocks */
 
 div.ganttview-blocks {
-	margin-top: 40px;
-}
-
-div.ganttview-block-container {
-	height: 28px;
-	padding-top: 4px;
+	position:relative;
+	padding:0;
 }
 
 div.ganttview-block {
-	position: relative;
-	height: 25px;
+	position: absolute;
 	background-color: #E5ECF9;
 	border: 1px solid #c0c0c0;
 	border-radius: 3px;
