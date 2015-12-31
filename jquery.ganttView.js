@@ -52,7 +52,8 @@ behavior: {
 		  behavior: {
       	clickable: true,
       	draggable: true,
-      	resizable: true
+      	resizable: true,
+        createable: true
       }
     };
 
@@ -133,12 +134,12 @@ behavior: {
         "height": (headerHeight - 1) + "px"}
       });
       var columnsDiv = jQuery("<div>", {
-        "class": "ganttview-hzheader-days"
+        "class": "ganttview-hzheader-columns"
       });
       for (var c in columns) {
         //alert (c.name);
         var columnDiv = jQuery("<div>", {
-          "class": "ganttview-hzheader-day",
+          "class": "ganttview-hzheader-column",
           "css": { "width": (cellWidth - 1) +"px"}
         }).append(columns[c].name);
         columnsDiv.append(columnDiv);
@@ -204,7 +205,11 @@ behavior: {
 	}
 
 	var Behavior = function (div, opts) {
+
   function apply() {
+    if (opts.behavior.createable) {
+      bindGridClick(div, opts.behavior.onCreate);
+    }
     if (opts.behavior.clickable) {
       bindBlockClick(div, opts.behavior.onClick);
     }
@@ -215,13 +220,28 @@ behavior: {
       bindBlockDrag(div, opts.cellWidth, opts.cellHeight, opts.behavior.onDrag);
     }
   }
-
+  /**
+   *
+   */
+  function bindGridClick(div, callback) {
+    jQuery("div.ganttview-grid-row-cell", div).live("click", function () {
+      var row = $(this).parent().index();;
+      var column = $(this).index();
+      data = {row: row, column: column, size:1};
+      if (callback) { callback(data); }
+    });
+  }
+  /**
+   *
+   */
   function bindBlockClick(div, callback) {
     jQuery("div.ganttview-block", div).live("click", function () {
       if (callback) { callback(jQuery(this).data("block-data")); }
     });
   }
-
+  /**
+   *
+   */
   function bindBlockResize(div, cellWidth, callback) {
   	jQuery("div.ganttview-block", div).resizable({
   		grid: cellWidth,
@@ -235,7 +255,9 @@ behavior: {
   		}
   	});
   }
-
+  /**
+   *
+   */
   function bindBlockDrag(div, cellWidth, cellHeight, callback) {
   	jQuery("div.ganttview-block", div).draggable({
   		grid: [cellWidth, cellHeight],

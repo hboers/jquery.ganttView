@@ -4,7 +4,7 @@ Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
 
-div.ganttview-hzheader-day,
+div.ganttview-hzheader-column,
 div.ganttview-vtheader,
 div.ganttview-vtheader-item-name,
 div.ganttview-grid,
@@ -12,12 +12,12 @@ div.ganttview-grid-row-cell {
 	float: left;
 }
 
-div.ganttview-hzheader-day {
+div.ganttview-hzheader-column {
 	text-align: center;
 }
 
 div.ganttview-grid-row-cell:last-child,
-div.ganttview-hzheader-day:last-child {
+div.ganttview-hzheader-column:last-child {
 	border-right: none;
 }
 
@@ -28,7 +28,7 @@ div.ganttview {
 
 /* Horizontal Header */
 
-div.ganttview-hzheader-day {
+div.ganttview-hzheader-column {
 	width: 80px;
 	height: 20px;
 	border-right: 1px solid #f0f0f0;

@@ -87,12 +87,15 @@
 					onDrag: function (data) {
 						var msg = "You dragged a block";
 						$("#eventMessage").text(msg);
-					}
+					},
+          onCreate: function(data) {
+            var msg = "You clicked a Grid: ("+ data.row + ", " + data.column+ ")";
+            $("#eventMessage").text(msg);
+          }
 				}
 			});
 
-			 $("#ganttChart").ganttView("setSlideWidth", 600);
-       $("#ganttChart").ganttView("clearBlocks");
+			 //$("#ganttChart").ganttView("setSlideWidth", 600);
 
 		});
 	</script>
