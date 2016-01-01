@@ -31,6 +31,21 @@ MIT License Applies
     onGridClick: function
 
   }
+
+  data
+  ----
+
+  { row: 0,
+    column: 0,
+    size: 1, 
+    data {
+      color: #444444,
+      title: "Titel",
+      text: "Text"
+    }
+  }
+
+
 */
 
 (function ( jQuery ) {
@@ -86,21 +101,14 @@ MIT License Applies
           });
 
 
-          if (settings.behavior.onClick) {
-            jQuery("div.ganttview-block").click(function () {
-              data = jQuery(this).data("block-data");
-              settings.behavior.onClick(data);
-            });
-          }
-
-
           if (settings.behavior.onResize) {
             jQuery("div.ganttview-block").resizable({
               grid: settings.cellWidth,
-              handles: "e,w",
+              handles: "e",
               stop: function () {
                 var block = jQuery(this);
                 var data = block.data("block-data");
+                data.from_size = data.size;
                 data.size = Math.ceil(block.width() / settings.cellWidth);
                 block.data("block-data",data);
                 settings.behavior.onResize(data);
@@ -108,22 +116,31 @@ MIT License Applies
             });
           }
 
+
           if (settings.behavior.onDrag){
             jQuery("div.ganttview-block").draggable({
               grid: [settings.cellWidth, settings.cellHeight],
-              stop: function () {
+              stop: function (event,ui) {
                 var block = jQuery(this);
                 var position = block.position();
                 var data = block.data("block-data");
+                data.from_row = data.row;
                 data.row = Math.floor(position.top/settings.cellHeight);
+                data.from_column =  data.column;
                 data.column = Math.floor(position.left/settings.cellWidth);
                 block.data("block-data",data);
-                settings.behavior.onDrag(block.data("block-data"));                
+                settings.behavior.onDrag(block.data("block-data"));
               }
             });
           }
         }
 
+        if (settings.behavior.onClick) {
+          jQuery("div.ganttview-block").click(function () {
+            data = jQuery(this).data("block-data");
+            settings.behavior.onClick(data);
+          });
+        }
 
         function addVtHeader(ganttviewDiv) {
           var headerDiv = jQuery("<div>", {

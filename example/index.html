@@ -29,10 +29,10 @@
 			$("#ganttChart").ganttView({
         slideWidth: 1000,
         data: [
-          {row: 0, column: 0, size: 1, data: {name: "Hello 1"}},
-        	{row: 0, column: 2, size: 3, data: {name: "Hello 2"}},
-        	{row: 1, column: 1, size: 1, data: {name: "Hello 1"}},
-        	{row: 2, column: 2, size: 1, data: {name: "Hello 2"}}
+          {row: 0, column: 0, size: 1, data: {text: "Hello 1",title:"Hello Title 1",color:red}},
+        	{row: 0, column: 2, size: 3, data: {text: "Hello 2"}},
+        	{row: 1, column: 1, size: 1, data: {text: "Hello 1"}},
+        	{row: 2, column: 2, size: 1, data: {text: "Hello 2"}}
         ],
         columns: [
           {id: 1, name: "col"},
@@ -78,19 +78,19 @@
         ],
       	behavior: {
 					onClick: function (data) {
-						var msg = "You clicked on a block";
+						var msg = "You clicked on the block ("+ data.row + ", " + data.column+ ")";
 						$("#eventMessage").text(msg);
 					},
 					onResize: function (data) {
-						var msg = "You resized a block" ;
+						var msg = "You resized the block at ("+ data.row + ", " + data.column+ ") from "+data.from_size+" to "+data.size ;
 						$("#eventMessage").text(msg);
 					},
 					onDrag: function (data) {
-						var msg = "You dragged a block";
+						var msg = "You dragged the block: from  ("+ data.from_row + ", " + data.from_column+ ") to ("+ data.row + ", " + data.column+ ")";
 						$("#eventMessage").text(msg);
 					},
           onGridClick: function(data) {
-            var msg = "You clicked a Grid: ("+ data.row + ", " + data.column+ ")";
+            var msg = "You clicked the Grid ("+ data.row + ", " + data.column+ ")";
             $("#eventMessage").text(msg);
           }
 				}
