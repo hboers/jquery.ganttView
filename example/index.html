@@ -29,10 +29,10 @@
 			$("#ganttChart").ganttView({
         slideWidth: 1000,
         data: [
-          {row: 0, column: 0, size: 1, data: {text: "Hello 1",title:"Hello Title 1",color:red}},
-        	{row: 0, column: 2, size: 3, data: {text: "Hello 2"}},
-        	{row: 1, column: 1, size: 1, data: {text: "Hello 1"}},
-        	{row: 2, column: 2, size: 1, data: {text: "Hello 2"}}
+          {row: 0, column: 0, size: 1, data: {html: "Hello 1",title:"Hello Title 1",color:"yellow",backgroundColor: "blue" }},
+        	{row: 0, column: 2, size: 3, data: {html: "Hello 2"}},
+        	{row: 1, column: 1, size: 1, data: {html: "Hello 1"}},
+        	{row: 2, column: 2, size: 1, data: {html: "Hello 2"}}
         ],
         columns: [
           {id: 1, name: "col"},
@@ -91,6 +91,14 @@
 					},
           onGridClick: function(data) {
             var msg = "You clicked the Grid ("+ data.row + ", " + data.column+ ")";
+            $("#eventMessage").text(msg);
+          },
+          onHzHeaderClick: function(data) {
+            var msg = "You clicked the horizontal Header "+ data.column ;
+            $("#eventMessage").text(msg);
+          },
+          onVtHeaderClick: function(data) {
+            var msg = "You clicked the vertical Header "+ data.row ;
             $("#eventMessage").text(msg);
           }
 				}
