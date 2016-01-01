@@ -58,7 +58,7 @@ MIT License Applies
 
       var container = jQuery(this);
       var settings = container.data('settings');
-    
+
 
       if (typeof options === "string") {
 
@@ -69,7 +69,7 @@ MIT License Applies
             var blocks = jQuery("div.ganttview-blocks");
             var block = addBlock(args[1]);
             blocks.append(block);
-
+            addBehaviour();
           break;
         }
 
@@ -133,6 +133,7 @@ MIT License Applies
               if (settings.behavior.onGridClick) { settings.behavior.onGridClick(data); }
             });
 
+            addBehaviour();
 
           }
 
@@ -153,7 +154,7 @@ MIT License Applies
             itemDiv.append(jQuery("<div>", {
                 "class": "ganttview-vtheader-item-name",
                 "css": { "height":  (settings.cellHeight-1) + "px", "width":  (settings.headerWidth-1) + "px"}
-            }).append(settings.rows[i].name));
+            }).html(settings.rows[i].html?settings.rows[i].html:''));
             headerDiv.append(itemDiv);
           }
           ganttviewDiv.append(headerDiv);
@@ -174,12 +175,19 @@ MIT License Applies
             var columnDiv = jQuery("<div>", {
               "class": "ganttview-hzheader-column",
               "css": { "width": (settings.cellWidth - 1) +"px"}
-            }).append(settings.columns[i].name);
+            });
+            if (settings.columns[i].html) {
+              columnDiv.html(settings.columns[i].html);
+            }
+            if (settings.columns[i].backgroundColor) {
+              columnDiv.css("background-color",settings.columns[i].backgroundColor);
+            }
             columnsDiv.append(columnDiv);
           }
           headerDiv.append(columnsDiv);
           ganttviewDiv.append(headerDiv);
         }
+
 
         function addGrid(div) {
           var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
@@ -204,18 +212,55 @@ MIT License Applies
         }
 
 
-
-              function addBlocks(ganttData) {
-                var containerDiv = jQuery("div.ganttview-slide-container");
-                var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks"});
-                containerDiv.append(blocksDiv);
-                for (var i in ganttData) {
-                  blocksDiv.append(addBlock(ganttData[i]))
-                }
-              }
+        function addBlocks(ganttData) {
+          var containerDiv = jQuery("div.ganttview-slide-container");
+          var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks"});
+          containerDiv.append(blocksDiv);
+          for (var i in ganttData) {
+            blocksDiv.append(addBlock(ganttData[i]))
+          }
+        }
 
         renderChart();
 
+      }
+
+
+      function addBehaviour() {
+
+        if (settings.behavior.onResize) {
+          jQuery("div.ganttview-block").resizable({
+            grid: settings.cellWidth,
+            handles: "e",
+            stop: function () {
+              var block = jQuery(this);
+              var data = block.data("block-data");
+              data.from_size = data.size;
+              data.size = Math.ceil(block.width() / settings.cellWidth);
+              block.data("block-data",data);
+              settings.behavior.onResize(data);
+            }
+          });
+        }
+
+
+        if (settings.behavior.onDrag){
+          jQuery("div.ganttview-block").draggable({
+            grid: [settings.cellWidth, settings.cellHeight],
+            containment: ".ganttview-grid",
+            stop: function (event,ui) {
+              var block = jQuery(this);
+              var position = block.position();
+              var data = block.data("block-data");
+              data.from_row = data.row;
+              data.row = Math.floor(position.top/settings.cellHeight);
+              data.from_column =  data.column;
+              data.column = Math.floor(position.left/settings.cellWidth);
+              block.data("block-data",data);
+              settings.behavior.onDrag(block.data("block-data"));
+            }
+          });
+        }
 
       }
 
@@ -251,38 +296,7 @@ MIT License Applies
           block.append(text);
         }
 
-                    if (settings.behavior.onResize) {
-                      block.resizable({
-                        grid: settings.cellWidth,
-                        handles: "e",
-                        stop: function () {
-                          var block = jQuery(this);
-                          var data = block.data("block-data");
-                          data.from_size = data.size;
-                          data.size = Math.ceil(block.width() / settings.cellWidth);
-                          block.data("block-data",data);
-                          settings.behavior.onResize(data);
-                        }
-                      });
-                    }
 
-
-                    if (settings.behavior.onDrag){
-                      block.draggable({
-                        grid: [settings.cellWidth, settings.cellHeight],
-                        stop: function (event,ui) {
-                          var block = jQuery(this);
-                          var position = block.position();
-                          var data = block.data("block-data");
-                          data.from_row = data.row;
-                          data.row = Math.floor(position.top/settings.cellHeight);
-                          data.from_column =  data.column;
-                          data.column = Math.floor(position.left/settings.cellWidth);
-                          block.data("block-data",data);
-                          settings.behavior.onDrag(block.data("block-data"));
-                        }
-                      });
-                    }
 
         return block;
       }
