@@ -53,7 +53,9 @@ behavior: {
           container.append(ganttviewDiv);
           var w = jQuery("div.ganttview-vtheader").outerWidth()+jQuery("div.ganttview-slide-container").outerWidth();
           ganttviewDiv.css("width",w+"px");
-
+          if (settings.data) {
+            addBlocks(settings.data);
+          }
         }
 
         function addVtHeader(ganttviewDiv) {
@@ -115,7 +117,33 @@ behavior: {
           div.append(gridDiv);
         }
 
-        //addBlocks(slideDiv, opts.data, opts.cellWidth, opts.cellHeight);
+        function addBlock(ganttData) {
+          var row = ganttData.row;
+          var column = ganttData.column;
+          var size = ganttData.size;
+          var data = ganttData.data;
+          var block = jQuery("<div>", {
+            "class": "ganttview-block",
+            "title": row + ":" + column + ":" + size,
+            "css": {
+              "width": ((size * settings.cellWidth) - 9) + "px",
+              "height": ((settings.cellHeight) - 9) + "px",
+              "left": ((column * settings.cellWidth) + 3) + "px",
+              "top": ((row * settings.cellHeight) + 4 ) + "px"
+            }
+          });
+          block.data('block-data',ganttData);
+          return block;
+        }
+
+        function addBlocks(ganttData) {
+          var ganttviewDiv = jQuery("div.ganttview-slide-container");
+          var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks"});
+          ganttviewDiv.append(blocksDiv);
+          for (var i in ganttData) {
+            blocksDiv.append(addBlock(ganttData[i]))
+          }
+        }
 
         renderChart();
 
