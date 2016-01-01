@@ -114,9 +114,6 @@ behavior: {
       div.append(slideDiv);
 		}
 
-    /**
-     * Row Title
-     */
     function addVtHeader(div, rows, cellHeight, headerHeight) {
       var headerDiv = jQuery("<div>", {
          "class": "ganttview-vtheader",
@@ -136,9 +133,6 @@ behavior: {
       div.append(headerDiv);
     }
 
-    /**
-     *  Create the Header
-     */
     function addHzHeader(div, columns, cellWidth, headerHeight) {
       var totalW = columns.length * cellWidth;
       var headerDiv = jQuery("<div>", {
@@ -163,9 +157,6 @@ behavior: {
       div.append(headerDiv);
     }
 
-    /**
-     * Grid zeichnen
-     */
     function addGrid(div, rows, columns, cellWidth, cellHeight) {
       var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
       var rowDiv = jQuery("<div>", { "class": "ganttview-grid-row" });
@@ -188,9 +179,6 @@ behavior: {
       div.append(gridDiv);
     }
 
-    /**
-     * Add Blocks
-     */
     function addBlocks(div, ganttData, cellWidth, cellHeight) {
       var blocks = jQuery("<div>", { "class": "ganttview-blocks"});
       div.append(blocks)
@@ -235,9 +223,7 @@ behavior: {
       bindBlockDrag(div, opts.cellWidth, opts.cellHeight, opts.behavior.onDrag);
     }
   }
-  /**
-   *
-   */
+
   function bindGridClick(div, callback) {
     jQuery("div.ganttview-grid-row-cell", div).live("click", function () {
       var row = $(this).parent().index();;
@@ -246,17 +232,13 @@ behavior: {
       if (callback) { callback(data); }
     });
   }
-  /**
-   *
-   */
+
   function bindBlockClick(div, callback) {
     jQuery("div.ganttview-block", div).live("click", function () {
       if (callback) { callback(jQuery(this).data("block-data")); }
     });
   }
-  /**
-   *
-   */
+
   function bindBlockResize(div, cellWidth, callback) {
   	jQuery("div.ganttview-block", div).resizable({
   		grid: cellWidth,
@@ -270,9 +252,7 @@ behavior: {
   		}
   	});
   }
-  /**
-   *
-   */
+
   function bindBlockDrag(div, cellWidth, cellHeight, callback) {
   	jQuery("div.ganttview-block", div).draggable({
   		grid: [cellWidth, cellHeight],
