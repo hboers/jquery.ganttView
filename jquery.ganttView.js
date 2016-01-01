@@ -54,110 +54,94 @@ MIT License Applies
 
 (function ( jQuery ) {
 
-
     $.fn.ganttView = function(options) {
 
-        var container = jQuery(this);
+      var container = jQuery(this);
+      var settings = container.data('settings');
+    
 
-        var settings = $.extend({
-            cellWidth: 81,
-            cellHeight: 31,
-            headerHeight: 31,
-            slideWidth: 600,
-            headerWidth: 200,
-            color: "inherit",
-            rows: [],
-            columns: [],
-            behavior: {
-              clickable: true,
-              draggable: true,
-              resizable: true
-            }
+      if (typeof options === "string") {
+
+        var args = Array.prototype.slice.call(arguments);
+
+        switch(args[0]) {
+          case 'addBlock':
+            var blocks = jQuery("div.ganttview-blocks");
+            var block = addBlock(args[1]);
+            blocks.append(block);
+
+          break;
+        }
+
+      } else {
+
+        settings = $.extend({
+          cellWidth: 81,
+          cellHeight: 31,
+          headerHeight: 31,
+          slideWidth: 600,
+          headerWidth: 200,
+          color: "inherit",
+          rows: [],
+          columns: [],
+          behavior: {
+            clickable: true,
+            draggable: true,
+            resizable: true
+          }
         }, options );
 
+        container.data('settings',settings);
 
         function renderChart() {
 
-          var ganttviewDiv = jQuery("<div>", {"class": "ganttview"});
-          var slideDiv = jQuery("<div>", {
-            "class": "ganttview-slide-container",
-            "css": { "width": settings.slideWidth + "px" }
-          });
+            var ganttviewDiv = jQuery("<div>", {"class": "ganttview"});
+            var slideDiv = jQuery("<div>", {
+              "class": "ganttview-slide-container",
+              "css": { "width": settings.slideWidth + "px" }
+            });
+            addVtHeader(ganttviewDiv);
+            addHzHeader(slideDiv);
+            addGrid(slideDiv);
+            ganttviewDiv.append(slideDiv);
+            container.append(ganttviewDiv);
 
-          addVtHeader(ganttviewDiv);
-          addHzHeader(slideDiv);
-          addGrid(slideDiv);
-          ganttviewDiv.append(slideDiv);
-          container.append(ganttviewDiv);
+            var w = jQuery("div.ganttview-vtheader").outerWidth()+jQuery("div.ganttview-slide-container").outerWidth();
+            ganttviewDiv.css("width",w+"px");
 
-          var w = jQuery("div.ganttview-vtheader").outerWidth()+jQuery("div.ganttview-slide-container").outerWidth();
-          ganttviewDiv.css("width",w+"px");
+            if (settings.data) {
+              addBlocks(settings.data);
+            }
 
-          if (settings.data) {
-            addBlocks(settings.data);
+
+            jQuery("div.ganttview-vtheader-item",container).click(function () {
+              var data = {row: $(this).index()};
+              if (settings.behavior.onGridClick) { settings.behavior.onVtHeaderClick(data); }
+            });
+
+
+            jQuery("div.ganttview-hzheader-column").click(function () {
+              var data = {column: $(this).index()};
+              if (settings.behavior.onGridClick) { settings.behavior.onHzHeaderClick(data); }
+            });
+
+
+            jQuery("div.ganttview-grid-row-cell").click(function () {
+              var row = $(this).parent().index();;
+              var column = $(this).index();
+              var data = {row: row, column: column, size:1};
+              if (settings.behavior.onGridClick) { settings.behavior.onGridClick(data); }
+            });
+
+
           }
 
-
-          jQuery("div.ganttview-vtheader-item",container).click(function () {
-            var data = {row: $(this).index()};
-            if (settings.behavior.onGridClick) { settings.behavior.onVtHeaderClick(data); }
-          });
-
-
-          jQuery("div.ganttview-hzheader-column").click(function () {
-            var data = {column: $(this).index()};
-            if (settings.behavior.onGridClick) { settings.behavior.onHzHeaderClick(data); }
-          });
-
-
-          jQuery("div.ganttview-grid-row-cell").click(function () {
-            var row = $(this).parent().index();;
-            var column = $(this).index();
-            var data = {row: row, column: column, size:1};
-            if (settings.behavior.onGridClick) { settings.behavior.onGridClick(data); }
-          });
-
-
-          if (settings.behavior.onResize) {
-            jQuery("div.ganttview-block").resizable({
-              grid: settings.cellWidth,
-              handles: "e",
-              stop: function () {
-                var block = jQuery(this);
-                var data = block.data("block-data");
-                data.from_size = data.size;
-                data.size = Math.ceil(block.width() / settings.cellWidth);
-                block.data("block-data",data);
-                settings.behavior.onResize(data);
-              }
+          if (settings.behavior.onClick) {
+            jQuery(document.body).on('click','div.ganttview-block',function () {
+              data = jQuery(this).data("block-data");
+              settings.behavior.onClick(data);
             });
           }
-
-
-          if (settings.behavior.onDrag){
-            jQuery("div.ganttview-block").draggable({
-              grid: [settings.cellWidth, settings.cellHeight],
-              stop: function (event,ui) {
-                var block = jQuery(this);
-                var position = block.position();
-                var data = block.data("block-data");
-                data.from_row = data.row;
-                data.row = Math.floor(position.top/settings.cellHeight);
-                data.from_column =  data.column;
-                data.column = Math.floor(position.left/settings.cellWidth);
-                block.data("block-data",data);
-                settings.behavior.onDrag(block.data("block-data"));
-              }
-            });
-          }
-        }
-
-        if (settings.behavior.onClick) {
-          jQuery("div.ganttview-block").click(function () {
-            data = jQuery(this).data("block-data");
-            settings.behavior.onClick(data);
-          });
-        }
 
         function addVtHeader(ganttviewDiv) {
           var headerDiv = jQuery("<div>", {
@@ -220,52 +204,93 @@ MIT License Applies
         }
 
 
-        function addBlock(ganttData) {
-          var row = ganttData.row;
-          var color = settings.color;
-          var backgroundColor = settings.backgroundColor;
-          var title = '';
-          if (ganttData.data) {
-            if (ganttData.data.color) {color = ganttData.data.color;}
-            if (ganttData.data.backgroundColor) {backgroundColor = ganttData.data.backgroundColor;}
-            if (ganttData.data.title) {title = ganttData.data.title;}
-          }
-          var column = ganttData.column;
-          var size = ganttData.size;
-          var data = ganttData.data;
-          var block = jQuery("<div>", {
-            "class": "ganttview-block",
-            "title": title,
-            "css": {
-              "width": ((size * settings.cellWidth) - 9) + "px",
-              "height": ((settings.cellHeight) - 9) + "px",
-              "left": ((column * settings.cellWidth) + 3) + "px",
-              "top": ((row * settings.cellHeight) + 4 ) + "px",
-              "color": color,
-              "background-color": backgroundColor
-            }
-          });
-          block.data('block-data',ganttData);
-          if (ganttData.data.html) {
-            var text = jQuery("<div>", {"class": "ganttview-block-text"});
-            text.html(ganttData.data.html);
-            block.append(text);
-          }
-          return block;
-        }
 
-        function addBlocks(ganttData) {
-          var containerDiv = jQuery("div.ganttview-slide-container");
-          var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks"});
-          containerDiv.append(blocksDiv);
-          for (var i in ganttData) {
-            blocksDiv.append(addBlock(ganttData[i]))
-          }
-        }
+              function addBlocks(ganttData) {
+                var containerDiv = jQuery("div.ganttview-slide-container");
+                var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks"});
+                containerDiv.append(blocksDiv);
+                for (var i in ganttData) {
+                  blocksDiv.append(addBlock(ganttData[i]))
+                }
+              }
 
         renderChart();
 
-        return this;
+
+      }
+
+      function addBlock(ganttData) {
+        var row = ganttData.row;
+        var color = settings.color;
+        var backgroundColor = settings.backgroundColor;
+        var title = '';
+        if (ganttData.data) {
+          if (ganttData.data.color) {color = ganttData.data.color;}
+          if (ganttData.data.backgroundColor) {backgroundColor = ganttData.data.backgroundColor;}
+          if (ganttData.data.title) {title = ganttData.data.title;}
+        }
+        var column = ganttData.column;
+        var size = ganttData.size;
+        var data = ganttData.data;
+        var block = jQuery("<div>", {
+          "class": "ganttview-block",
+          "title": title,
+          "css": {
+            "width": ((size * settings.cellWidth) - 9) + "px",
+            "height": ((settings.cellHeight) - 9) + "px",
+            "left": ((column * settings.cellWidth) + 3) + "px",
+            "top": ((row * settings.cellHeight) + 4 ) + "px",
+            "color": color,
+            "background-color": backgroundColor
+          }
+        });
+        block.data('block-data',ganttData);
+        if (ganttData.data && ganttData.data.html) {
+          var text = jQuery("<div>", {"class": "ganttview-block-text"});
+          text.html(ganttData.data.html);
+          block.append(text);
+        }
+
+                    if (settings.behavior.onResize) {
+                      block.resizable({
+                        grid: settings.cellWidth,
+                        handles: "e",
+                        stop: function () {
+                          var block = jQuery(this);
+                          var data = block.data("block-data");
+                          data.from_size = data.size;
+                          data.size = Math.ceil(block.width() / settings.cellWidth);
+                          block.data("block-data",data);
+                          settings.behavior.onResize(data);
+                        }
+                      });
+                    }
+
+
+                    if (settings.behavior.onDrag){
+                      block.draggable({
+                        grid: [settings.cellWidth, settings.cellHeight],
+                        stop: function (event,ui) {
+                          var block = jQuery(this);
+                          var position = block.position();
+                          var data = block.data("block-data");
+                          data.from_row = data.row;
+                          data.row = Math.floor(position.top/settings.cellHeight);
+                          data.from_column =  data.column;
+                          data.column = Math.floor(position.left/settings.cellWidth);
+                          block.data("block-data",data);
+                          settings.behavior.onDrag(block.data("block-data"));
+                        }
+                      });
+                    }
+
+        return block;
+      }
+
+
+
+      return this;
+
 
     };
 

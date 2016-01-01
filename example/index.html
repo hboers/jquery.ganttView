@@ -26,7 +26,8 @@
 	<script type="text/javascript" src="../jquery.ganttView.js"></script>
 	<script type="text/javascript">
 		$(function () {
-			$("#ganttChart").ganttView({
+
+	   $("#ganttChart").ganttView({
         slideWidth: 1000,
         data: [
           {row: 0, column: 0, size: 1, data: {html: "Hello 1",title:"Hello Title 1",color:"yellow",backgroundColor: "blue" }},
@@ -104,7 +105,10 @@
 				}
 			});
 
+          $("#ganttChart").ganttView("addBlock",{row:5,column:3,size:6});
 		});
+
+
 	</script>
 
 </body>
