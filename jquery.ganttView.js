@@ -247,7 +247,6 @@ MIT License Applies
           });
         }
 
-
         if (settings.behavior.onDrag){
           jQuery("div.ganttview-block").draggable({
             grid: [settings.cellWidth, settings.cellHeight],
@@ -269,38 +268,50 @@ MIT License Applies
       }
 
       function addBlock(ganttData) {
-        var row = ganttData.row;
-        var color = settings.color;
-        var backgroundColor = settings.backgroundColor;
-        var title = '';
-        if (ganttData.data) {
-          if (ganttData.data.color) {color = ganttData.data.color;}
-          if (ganttData.data.backgroundColor) {backgroundColor = ganttData.data.backgroundColor;}
-          if (ganttData.data.title) {title = ganttData.data.title;}
-        }
-        var column = ganttData.column;
-        var size = ganttData.size;
-        var data = ganttData.data;
+
         var block = jQuery("<div>", {
           "class": "ganttview-block",
-          "title": title,
           "css": {
-            "width": ((size * settings.cellWidth) - 9) + "px",
+            "width": ((ganttData.size * settings.cellWidth) - 9) + "px",
             "height": ((settings.cellHeight) - 9) + "px",
-            "left": ((column * settings.cellWidth) + 3) + "px",
-            "top": ((row * settings.cellHeight) + 4 ) + "px",
-            "color": color,
-            "background-color": backgroundColor
+            "left": ((ganttData.column * settings.cellWidth) + 3) + "px",
+            "top": ((ganttData.row * settings.cellHeight) + 4 ) + "px",
           }
         });
+
+        if (ganttData.data && ganttData.data.class) {
+          block.addClass(ganttData.data.class);
+        }
+
+        if (ganttData.data && ganttData.data.title) {
+          block.attr("title",ganttData.data.title);
+        }
+
+        if (ganttData.data && ganttData.data.backgroundColor) {
+          block.css("background-color",ganttData.data.backgroundColor);
+        }
+
+        if (ganttData.data && ganttData.data.color) {
+          block.css("color",ganttData.data.color);
+        }
+
+
         block.data('block-data',ganttData);
+
         if (ganttData.data && ganttData.data.html) {
-          var text = jQuery("<div>", {"class": "ganttview-block-text"});
+          var text = jQuery("<div>", {
+            "class": "ganttview-block-text"
+          });
           text.html(ganttData.data.html);
           block.append(text);
         }
 
-
+        if (settings.behavior.onResize) {
+          var handle= jQuery("<div>", {
+            class: "ganttview-block-resizable-handle ui-resizable-e"
+          });
+          block.append(handle);
+        }
 
         return block;
       }

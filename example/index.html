@@ -56,9 +56,9 @@
           { id: 1, html: "row" },
         ],
         data: [
-          { row: 0, column: 0, size:1 },
-          { row: 1, column: 1, size:1 },
-          { row: 2, column: 2, size:2 },
+          { row: 0, column: 0, size:1, data : {html: "Hello Gantt"}},
+          { row: 1, column: 1, size:1, data : {title: "Hello Gantt", class: "green-block"}},
+          { row: 2, column: 2, size:1, data : {html:"De finibus bonorum et malorum (Deutsch: <b>„Vom höchsten Gut und vom größten Übel“</b>, auch „Über die Ziele menschlichen Handelns“) ist ein philosophisches Werk des römischen Redners, Politikers und Philosophen Marcus Tullius Cicero. Es besteht aus fünf Büchern, in denen sich Cicero mit den Philosophierichtungen des epikureischen Hedonismus, der Stoa und des Peripatos auseinandersetzt und diese dem römischen Leser vorstellt. Das Leitthema des Werkes ist die Frage nach dem anzustrebenden höchsten Gut. Es entstand im Sommer des Jahres 45 v. Chr. innerhalb von etwa anderthalb Monaten. Zusammen mit den kurz danach geschriebenen Tusculanae disputationes („Gespräche in Tusculum“) ist De finibus das umfangreichste philosophische Werk Ciceros. Gewidmet ist das Werk Marcus Iunius Brutus.", color:"white",backgroundColor: "red"}},
         ],
       	behavior: {
 					onClick: function (data) {
