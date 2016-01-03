@@ -30,8 +30,11 @@
 		$(function () {
 
 	   $("#ganttChart").ganttView({
+       cellHeight: 51,
+       cellWidth: 151,
+       slideWidth: 1000,
         columns: [
-          {id: 1, html: "col<br/>Hello<br/>hello",backgroundColor:"#ffeeee"},
+          {id: 1, html: "col<br/>Hello hello","title":"Hello Title"},
           {id: 1, html: "col"},
           {id: 1, html: "col"},
           {id: 1, html: "col"},
@@ -42,7 +45,7 @@
           {id: 1, html: "col"},
         ],
         rows: [
-          { id: 1, html: "row<br/><span style=font-size:xx-small;>2. line</span>" },
+          { id: 1, html: "row<br/><span style=font-size:xx-small;>2. line</span>",title:"hello Title" },
           { id: 1, html: "row" },
           { id: 1, html: "row" },
           { id: 1, html: "row" },

@@ -16,7 +16,6 @@ MIT License Applies
 
   cellWidth: number
   cellHeight: number
-  headerHeight: number
   slideWidth: number
 
   color: string
@@ -78,9 +77,7 @@ MIT License Applies
         settings = $.extend({
           cellWidth: 81,
           cellHeight: 31,
-          headerHeight: 31,
           slideWidth: 600,
-          headerWidth: 200,
           color: "inherit",
           rows: [],
           columns: [],
@@ -109,22 +106,24 @@ MIT License Applies
             var w = jQuery("div.ganttview-vtheader").outerWidth()+jQuery("div.ganttview-slide-container").outerWidth();
             ganttviewDiv.css("width",w+"px");
 
+
+            var h = jQuery("div.ganttview-hzheader").outerHeight();
+            $("div.ganttview-vtheader").css({"margin-top":h})
+
+
             if (settings.data) {
               addBlocks(settings.data);
             }
-
 
             jQuery("div.ganttview-vtheader-item",container).click(function () {
               var data = {row: $(this).index()};
               if (settings.behavior.onGridClick) { settings.behavior.onVtHeaderClick(data); }
             });
 
-
             jQuery("div.ganttview-hzheader-column").click(function () {
               var data = {column: $(this).index()};
               if (settings.behavior.onGridClick) { settings.behavior.onHzHeaderClick(data); }
             });
-
 
             jQuery("div.ganttview-grid-row-cell").click(function () {
               var row = $(this).parent().index();;
@@ -147,14 +146,18 @@ MIT License Applies
         function addVtHeader(ganttviewDiv) {
           var headerDiv = jQuery("<div>", {
             "class": "ganttview-vtheader",
-            "css": {"margin-top": (settings.headerHeight -1) +"px"}
           });
           for (var i = 0; i < settings.rows.length; i++) {
             var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
             itemDiv.append(jQuery("<div>", {
                 "class": "ganttview-vtheader-item-name",
-                "css": { "height":  (settings.cellHeight-1) + "px", "width":  (settings.headerWidth-1) + "px"}
+                "css": {
+                  "height":  (settings.cellHeight-1) + "px",
+                }
             }).html(settings.rows[i].html?settings.rows[i].html:''));
+            if (settings.rows[i].title) {
+              itemDiv.attr("title",settings.rows[i].title);
+            }
             headerDiv.append(itemDiv);
           }
           ganttviewDiv.append(headerDiv);
@@ -165,9 +168,8 @@ MIT License Applies
           var totalW = settings.columns.length * settings.cellWidth;
           var headerDiv = jQuery("<div>", {
             "class": "ganttview-hzheader",
-            "css": {"width": totalW + "px",
-            "height": (settings.headerHeight - 1) + "px"}
-          });
+            "css": {"width": totalW + "px"}
+        });
           var columnsDiv = jQuery("<div>", {
             "class": "ganttview-hzheader-columns"
           });
@@ -179,10 +181,10 @@ MIT License Applies
             if (settings.columns[i].html) {
               columnDiv.html(settings.columns[i].html);
             }
-            if (settings.columns[i].backgroundColor) {
-              columnDiv.css("background-color",settings.columns[i].backgroundColor);
+            if (settings.columns[i].title) {
+              columnDiv.attr("title",settings.columns[i].title);
             }
-            columnsDiv.append(columnDiv);
+          columnsDiv.append(columnDiv);
           }
           headerDiv.append(columnsDiv);
           ganttviewDiv.append(headerDiv);
