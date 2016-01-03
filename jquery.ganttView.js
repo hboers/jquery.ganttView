@@ -31,6 +31,8 @@ MIT License Applies
   	onDrag: function,
   	onResize: function,
     onGridClick: function
+    onHzHeaderClick: function
+    onVtHeaderClick: function
 
   }
 
@@ -117,12 +119,12 @@ MIT License Applies
 
             jQuery("div.ganttview-vtheader-item",container).click(function () {
               var data = {row: $(this).index()};
-              if (settings.behavior.onGridClick) { settings.behavior.onVtHeaderClick(data); }
+              if (settings.behavior.onVtHeaderClick) { settings.behavior.onVtHeaderClick(data); }
             });
 
             jQuery("div.ganttview-hzheader-column").click(function () {
               var data = {column: $(this).index()};
-              if (settings.behavior.onGridClick) { settings.behavior.onHzHeaderClick(data); }
+              if (settings.behavior.onHzHeaderClick) { settings.behavior.onHzHeaderClick(data); }
             });
 
             jQuery("div.ganttview-grid-row-cell").click(function () {
